@@ -7,12 +7,14 @@ from utils import log_error
 from webBrowser import open_web_browser
 from file_dialog import handle_file_selection
 from file_voice import handle_voice_file_selection
+from text_file_handler import handle_create_text_file  
 
 command_patterns = {
     re.compile(r'\bopen disney plus\b', re.IGNORECASE): lambda command: open_web_browser("https://www.disneyplus.com/"),
     re.compile(r'\bopen netflix\b', re.IGNORECASE): lambda command: open_web_browser("https://www.netflix.com/"),
     re.compile(r'\bselect file\b', re.IGNORECASE): handle_file_selection,
     re.compile(r'\bopen file\b', re.IGNORECASE): handle_voice_file_selection,
+    re.compile(r'\bcreate text file\b', re.IGNORECASE): handle_create_text_file,
 }
 
 def main():
@@ -35,7 +37,7 @@ def main():
                         match = pattern.search(command_part)
                         if match:
                             command = command_part[match.end():].strip()
-                            handler(command)
+                            handler(command, openai_key)
                             handled = True
                             break
                     if not handled:
